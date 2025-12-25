@@ -1,0 +1,2519 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CÉRÉMONIA - Plateforme de souvenirs événementiels</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #4a6fa5;
+            --secondary-color: #166088;
+            --accent-color: #4fc3a1;
+            --light-color: #f8f9fa;
+            --dark-color: #343a40;
+            --danger-color: #e74c3c;
+            --success-color: #2ecc71;
+            --warning-color: #f39c12;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* Header & Navigation */
+        header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo i {
+            font-size: 2rem;
+            color: var(--accent-color);
+        }
+        
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        nav a:hover, nav a.active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .btn {
+            padding: 0.6rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: #3da88a;
+            transform: translateY(-2px);
+        }
+        
+        .btn-outline {
+            background-color: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+        
+        .btn-outline:hover {
+            background-color: white;
+            color: var(--primary-color);
+        }
+        
+        .btn-secondary {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+        
+        .btn-warning {
+            background-color: var(--warning-color);
+            color: white;
+        }
+        
+        .btn-success {
+            background-color: var(--success-color);
+            color: white;
+        }
+        
+        .btn-lg {
+            padding: 0.8rem 2rem;
+            font-size: 1.1rem;
+        }
+        
+        /* Main Sections */
+        .section {
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 6rem 2rem;
+            background: linear-gradient(rgba(255, 255, 255, 0.9), rgba(255, 255, 255, 0.9)), url('https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80') center/cover;
+        }
+        
+        .hero h2 {
+            font-size: 3rem;
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto 2.5rem;
+            color: #555;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .feature-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .feature-card i {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+        
+        /* Tabs for different sections */
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 3rem;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .tab-btn {
+            padding: 1rem 2rem;
+            background: none;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-btn.active {
+            color: var(--primary-color);
+        }
+        
+        .tab-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--primary-color);
+        }
+        
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        /* Event Creation Form */
+        .form-container {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: var(--secondary-color);
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+            transition: border 0.3s ease;
+        }
+        
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 1.5rem;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+        }
+        
+        /* Event Dashboard */
+        .events-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .event-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+        
+        .event-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .event-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1.5rem;
+        }
+        
+        .event-body {
+            padding: 1.5rem;
+        }
+        
+        .event-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #eee;
+        }
+        
+        .stat {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: #777;
+        }
+        
+        /* Guest View */
+        .guest-view {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .event-title {
+            color: var(--secondary-color);
+            margin-bottom: 1rem;
+        }
+        
+        .media-options {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2.5rem 0;
+        }
+        
+        .media-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1.5rem;
+            background: #f8f9fa;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 140px;
+        }
+        
+        .media-btn:hover {
+            background: var(--light-color);
+            transform: translateY(-5px);
+        }
+        
+        .media-btn i {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.8rem;
+        }
+        
+        /* QR Code Display */
+        .qr-container {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        #qrcode {
+            margin: 1.5rem auto;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            display: inline-block;
+        }
+        
+        /* Gallery */
+        .gallery-controls {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            background: #f1f1f1;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .filter-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .gallery-item {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        .gallery-item img, .gallery-item video {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            display: block;
+        }
+        
+        .gallery-item .item-info {
+            padding: 1rem;
+            background: white;
+        }
+        
+        /* Pricing */
+        .pricing-plans {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .plan-card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            transition: transform 0.3s ease;
+        }
+        
+        .plan-card.featured {
+            transform: scale(1.05);
+            border: 2px solid var(--accent-color);
+        }
+        
+        .plan-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .plan-card.featured:hover {
+            transform: scale(1.05) translateY(-10px);
+        }
+        
+        .plan-header {
+            padding: 2rem;
+            text-align: center;
+            color: white;
+        }
+        
+        .plan-free .plan-header {
+            background: linear-gradient(135deg, #6c757d, #495057);
+        }
+        
+        .plan-premium .plan-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+        }
+        
+        .plan-body {
+            padding: 2rem;
+        }
+        
+        .plan-features {
+            list-style: none;
+            margin: 1.5rem 0;
+        }
+        
+        .plan-features li {
+            padding: 0.5rem 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .plan-features li i {
+            color: var(--accent-color);
+        }
+        
+        .price {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin: 1rem 0;
+        }
+        
+        /* Payment Page Styles */
+        .payment-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .payment-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 2.5rem;
+            text-align: center;
+        }
+        
+        .payment-header h2 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .payment-body {
+            padding: 2.5rem;
+        }
+        
+        .payment-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+        
+        .payment-steps::before {
+            content: '';
+            position: absolute;
+            top: 24px;
+            left: 10%;
+            right: 10%;
+            height: 3px;
+            background: #eee;
+            z-index: 1;
+        }
+        
+        .payment-step {
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            flex: 1;
+        }
+        
+        .step-number {
+            width: 48px;
+            height: 48px;
+            background: #eee;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.8rem;
+            font-weight: bold;
+            color: #666;
+            font-size: 1.2rem;
+            border: 3px solid white;
+        }
+        
+        .payment-step.active .step-number {
+            background: var(--accent-color);
+            color: white;
+            border-color: var(--accent-color);
+        }
+        
+        .payment-step.completed .step-number {
+            background: var(--success-color);
+            color: white;
+            border-color: var(--success-color);
+        }
+        
+        .payment-step.completed .step-number::after {
+            content: '✓';
+        }
+        
+        .step-label {
+            font-weight: 600;
+            color: #555;
+            font-size: 0.95rem;
+        }
+        
+        .payment-step.active .step-label {
+            color: var(--primary-color);
+        }
+        
+        .payment-methods-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2.5rem;
+        }
+        
+        .payment-method-card {
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            padding: 1.8rem 1rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #fdfdfd;
+        }
+        
+        .payment-method-card:hover {
+            border-color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+        
+        .payment-method-card.selected {
+            border-color: var(--accent-color);
+            background-color: rgba(79, 195, 161, 0.08);
+            box-shadow: 0 5px 15px rgba(79, 195, 161, 0.15);
+        }
+        
+        .payment-method-card i {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        
+        .payment-method-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+        }
+        
+        .payment-method-card p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+        
+        .payment-step-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .payment-step-content.active {
+            display: block;
+        }
+        
+        .payment-form {
+            display: none;
+            background: #f9f9f9;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-top: 1.5rem;
+        }
+        
+        .payment-form.active {
+            display: block;
+        }
+        
+        .payment-summary {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            border: 1px solid #dee2e6;
+        }
+        
+        .payment-summary h4 {
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.3rem;
+        }
+        
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            padding-bottom: 0.8rem;
+            border-bottom: 1px dashed #dee2e6;
+        }
+        
+        .summary-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.4rem;
+            font-weight: bold;
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 2px solid #ced4da;
+            color: var(--secondary-color);
+        }
+        
+        .simulation-message {
+            background: #fff8e1;
+            border-left: 4px solid var(--warning-color);
+            padding: 1.2rem;
+            margin-top: 2rem;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+        }
+        
+        .simulation-message i {
+            color: var(--warning-color);
+            font-size: 1.2rem;
+            margin-top: 2px;
+        }
+        
+        .payment-status {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: #f9f9f9;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+        
+        .status-icon {
+            font-size: 5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .status-success .status-icon {
+            color: var(--success-color);
+        }
+        
+        .status-error .status-icon {
+            color: var(--danger-color);
+        }
+        
+        .payment-status h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--secondary-color);
+        }
+        
+        .transaction-details {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-top: 1.5rem;
+            text-align: left;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .transaction-details p {
+            margin-bottom: 0.8rem;
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .transaction-details strong {
+            color: var(--secondary-color);
+            min-width: 150px;
+        }
+        
+        /* Payment methods display */
+        .payment-methods {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .payment-method {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 0.8rem 1.2rem;
+            background: #f8f9fa;
+            border-radius: 6px;
+            font-weight: 500;
+        }
+        
+        /* Footer */
+        footer {
+            background: var(--dark-color);
+            color: white;
+            padding: 3rem 2rem 2rem;
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-section h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.5rem;
+            color: var(--accent-color);
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 0.8rem;
+        }
+        
+        .footer-section a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-section a:hover {
+            color: var(--accent-color);
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid #444;
+            color: #aaa;
+            font-size: 0.9rem;
+        }
+        
+        .company-signature {
+            text-align: center;
+            margin-top: 1rem;
+            color: var(--accent-color);
+            font-weight: 600;
+        }
+        
+        /* Utility Classes */
+        .hidden {
+            display: none !important;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .mt-1 { margin-top: 1rem; }
+        .mt-2 { margin-top: 2rem; }
+        .mt-3 { margin-top: 3rem; }
+        .mb-1 { margin-bottom: 1rem; }
+        .mb-2 { margin-bottom: 2rem; }
+        .mb-3 { margin-bottom: 3rem; }
+        
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            
+            nav ul {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .hero h2 {
+                font-size: 2.2rem;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+            
+            .media-options {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .gallery-controls {
+                flex-direction: column;
+            }
+            
+            .payment-steps {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            
+            .payment-steps::before {
+                display: none;
+            }
+            
+            .payment-methods-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .payment-container {
+                margin: 0 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="logo">
+            <i class="fas fa-camera-retro"></i>
+            <h1>CÉRÉMONIA</h1>
+        </div>
+        
+        <nav>
+            <ul>
+                <li><a href="#" class="active" onclick="showSection('home')">Accueil</a></li>
+                <li><a href="#" onclick="showSection('create-event')">Créer un événement</a></li>
+                <li><a href="#" onclick="showSection('dashboard')">Tableau de bord</a></li>
+                <li><a href="#" onclick="showSection('pricing')">Offres</a></li>
+                <li><a href="#" onclick="showSection('guest-view')">Invité</a></li>
+            </ul>
+        </nav>
+        
+        <div class="auth-buttons">
+            <button class="btn btn-outline" onclick="showSection('login')">Connexion</button>
+            <button class="btn btn-primary" onclick="showSection('register')">Inscription</button>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Home / Hero Section -->
+        <section id="home" class="section hero active">
+            <h2>Préservez chaque souvenir de vos événements</h2>
+            <p>CÉRÉMONIA est une plateforme web moderne qui permet de créer un espace numérique privé pour chaque cérémonie (mariage, anniversaire, baptême, fête privée, événement culturel).</p>
+            
+            <button class="btn btn-primary btn-lg" onclick="showSection('create-event')">
+                <i class="fas fa-plus-circle"></i> Créer un événement gratuitement
+            </button>
+            
+            <div class="features mt-3">
+                <div class="feature-card">
+                    <i class="fas fa-qrcode"></i>
+                    <h3>QR Code Unique</h3>
+                    <p>Chaque événement dispose de son propre QR code pour un accès rapide et sécurisé</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-images"></i>
+                    <h3>Galerie Centralisée</h3>
+                    <p>Tous les souvenirs en un seul endroit, accessibles à tout moment</p>
+                </div>
+                
+                <div class="feature-card">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <h3>Stockage Intelligent</h3>
+                    <p>Sauvegarde asynchrone même avec une faible connexion Internet</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Create Event Form -->
+        <section id="create-event" class="section hidden">
+            <h2 class="text-center mb-3">Créez votre événement</h2>
+            
+            <div class="form-container">
+                <form id="eventForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="eventName">Nom de l'événement *</label>
+                            <input type="text" id="eventName" class="form-control" placeholder="Ex: Mariage de Sophie et Marc" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="eventType">Type d'événement *</label>
+                            <select id="eventType" class="form-control" required>
+                                <option value="">Sélectionnez...</option>
+                                <option value="wedding">Mariage</option>
+                                <option value="birthday">Anniversaire</option>
+                                <option value="baptism">Baptême</option>
+                                <option value="party">Fête privée</option>
+                                <option value="corporate">Événement professionnel</option>
+                                <option value="other">Autre</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="eventDate">Date de l'événement *</label>
+                            <input type="date" id="eventDate" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="eventLocation">Lieu</label>
+                            <input type="text" id="eventLocation" class="form-control" placeholder="Ex: Salle des fêtes, Paris">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="eventTheme">Thème visuel</label>
+                        <select id="eventTheme" class="form-control">
+                            <option value="classic">Classique</option>
+                            <option value="modern">Moderne</option>
+                            <option value="elegant">Élégant</option>
+                            <option value="fun">Fun</option>
+                            <option value="romantic">Romantique</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="welcomeMessage">Message d'accueil personnalisé</label>
+                        <textarea id="welcomeMessage" class="form-control" rows="3" placeholder="Souhaitez la bienvenue à vos invités..."></textarea>
+                    </div>
+                    
+                    <div class="text-center mt-3">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            <i class="fas fa-magic"></i> Créer l'événement
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Event Dashboard -->
+        <section id="dashboard" class="section hidden">
+            <h2 class="text-center mb-3">Vos événements</h2>
+            
+            <div class="tabs">
+                <button class="tab-btn active" onclick="showDashboardTab('active')">Événements actifs</button>
+                <button class="tab-btn" onclick="showDashboardTab('past')">Événements passés</button>
+                <button class="tab-btn" onclick="showDashboardTab('stats')">Statistiques</button>
+            </div>
+            
+            <div id="active-events" class="tab-content active">
+                <div class="events-grid" id="eventsContainer">
+                    <!-- Events will be dynamically added here -->
+                </div>
+                
+                <div class="text-center mt-3">
+                    <button class="btn btn-primary" onclick="showSection('create-event')">
+                        <i class="fas fa-plus-circle"></i> Ajouter un événement
+                    </button>
+                </div>
+            </div>
+            
+            <div id="past-events" class="tab-content">
+                <div class="text-center">
+                    <p>Aucun événement passé pour le moment.</p>
+                </div>
+            </div>
+            
+            <div id="stats-tab" class="tab-content">
+                <div class="form-container">
+                    <h3 class="text-center mb-2">Statistiques globales</h3>
+                    <div class="event-stats">
+                        <div class="stat">
+                            <div class="stat-value">3</div>
+                            <div class="stat-label">Événements</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">147</div>
+                            <div class="stat-label">Photos</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">23</div>
+                            <div class="stat-label">Vidéos</div>
+                        </div>
+                        <div class="stat">
+                            <div class="stat-value">42</div>
+                            <div class="stat-label">Messages</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Guest View -->
+        <section id="guest-view" class="section hidden">
+            <div class="guest-view">
+                <h2 class="event-title" id="guestEventTitle">Mariage de Sophie et Marc</h2>
+                <p class="mb-2">Événement du <span id="guestEventDate">15 juin 2024</span></p>
+                <p class="mb-3">Partagez vos souvenirs de cet événement spécial</p>
+                
+                <div class="media-options">
+                    <div class="media-btn" onclick="takePhoto()">
+                        <i class="fas fa-camera"></i>
+                        <span>Prendre une photo</span>
+                    </div>
+                    
+                    <div class="media-btn" onclick="recordVideo()">
+                        <i class="fas fa-video"></i>
+                        <span>Enregistrer une vidéo</span>
+                    </div>
+                    
+                    <div class="media-btn" onclick="showMessageForm()">
+                        <i class="fas fa-comment-alt"></i>
+                        <span>Laisser un message</span>
+                    </div>
+                </div>
+                
+                <div class="form-group mt-3">
+                    <label for="guestName">Votre prénom (optionnel)</label>
+                    <input type="text" id="guestName" class="form-control" placeholder="Ex: Marie">
+                </div>
+                
+                <div id="camera-container" class="hidden mt-3">
+                    <video id="camera-preview" autoplay playsinline style="width: 100%; max-width: 500px; border-radius: 8px;"></video>
+                    <div class="mt-2">
+                        <button class="btn btn-primary" onclick="capturePhoto()">
+                            <i class="fas fa-camera"></i> Capturer
+                        </button>
+                        <button class="btn btn-secondary" onclick="closeCamera()">
+                            <i class="fas fa-times"></i> Annuler
+                        </button>
+                    </div>
+                    <canvas id="photo-canvas" class="hidden"></canvas>
+                </div>
+                
+                <div id="message-form" class="hidden mt-3">
+                    <textarea id="messageText" class="form-control" rows="4" placeholder="Écrivez votre message ici..."></textarea>
+                    <div class="mt-2">
+                        <button class="btn btn-primary" onclick="sendMessage()">
+                            <i class="fas fa-paper-plane"></i> Envoyer
+                        </button>
+                        <button class="btn btn-secondary" onclick="hideMessageForm()">
+                            <i class="fas fa-times"></i> Annuler
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="mt-3">
+                    <button class="btn btn-secondary" onclick="showSection('gallery')">
+                        <i class="fas fa-images"></i> Voir la galerie
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery -->
+        <section id="gallery" class="section hidden">
+            <h2 class="text-center mb-3">Galerie de l'événement</h2>
+            
+            <div class="form-container">
+                <div class="gallery-controls">
+                    <div>
+                        <h3 id="galleryEventTitle">Mariage de Sophie et Marc</h3>
+                        <p id="galleryEventDate">Événement du 15 juin 2024</p>
+                    </div>
+                    
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" onclick="filterGallery('all')">Tous</button>
+                        <button class="filter-btn" onclick="filterGallery('photos')">Photos</button>
+                        <button class="filter-btn" onclick="filterGallery('videos')">Vidéos</button>
+                        <button class="filter-btn" onclick="filterGallery('messages')">Messages</button>
+                    </div>
+                </div>
+                
+                <div class="gallery-grid" id="galleryGrid">
+                    <!-- Gallery items will be dynamically added here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- QR Code Display -->
+        <section id="qr-code" class="section hidden">
+            <div class="qr-container">
+                <h2 class="mb-2">QR Code de votre événement</h2>
+                <p>Partagez ce QR code avec vos invités pour qu'ils accèdent à la page de l'événement</p>
+                
+                <div id="qrcode"></div>
+                
+                <div class="mt-3">
+                    <p><strong>Lien de l'événement :</strong></p>
+                    <p id="event-link">https://ceremonia.com/event/abc123</p>
+                    <button class="btn btn-secondary mt-1" onclick="copyLink()">
+                        <i class="fas fa-copy"></i> Copier le lien
+                    </button>
+                </div>
+                
+                <div class="mt-3">
+                    <button class="btn btn-primary" onclick="showSection('dashboard')">
+                        <i class="fas fa-arrow-left"></i> Retour au tableau de bord
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pricing -->
+        <section id="pricing" class="section hidden">
+            <h2 class="text-center mb-3">Choisissez votre formule</h2>
+            
+            <div class="pricing-plans">
+                <div class="plan-card plan-free">
+                    <div class="plan-header">
+                        <h3>Standard</h3>
+                        <p>Gratuit</p>
+                    </div>
+                    
+                    <div class="plan-body">
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> 1 événement actif</li>
+                            <li><i class="fas fa-check"></i> QR code simple</li>
+                            <li><i class="fas fa-check"></i> Galerie avec date</li>
+                            <li><i class="fas fa-check"></i> Qualité standard</li>
+                            <li><i class="fas fa-check"></i> Stockage limité</li>
+                            <li><i class="fas fa-check"></i> Accès invités sans compte</li>
+                            <li><i class="fas fa-check"></i> Logo CÉRÉMONIA visible</li>
+                        </ul>
+                        
+                        <button class="btn btn-secondary" style="width: 100%;" onclick="selectPlan('free')">
+                            Sélectionner
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="plan-card plan-premium featured">
+                    <div class="plan-header">
+                        <h3>Premium</h3>
+                        <div class="price">25$</div>
+                        <p>par événement</p>
+                    </div>
+                    
+                    <div class="plan-body">
+                        <ul class="plan-features">
+                            <li><i class="fas fa-check"></i> Événements illimités</li>
+                            <li><i class="fas fa-check"></i> QR code personnalisé</li>
+                            <li><i class="fas fa-check"></i> Galerie HD</li>
+                            <li><i class="fas fa-check"></i> Stockage étendu</li>
+                            <li><i class="fas fa-check"></i> Export complet (ZIP)</li>
+                            <li><i class="fas fa-check"></i> Sans logo CÉRÉMONIA</li>
+                            <li><i class="fas fa-check"></i> Personnalisation avancée</li>
+                            <li><i class="fas fa-check"></i> Musique de fond</li>
+                            <li><i class="fas fa-check"></i> Accès galerie post-événement</li>
+                            <li><i class="fas fa-check"></i> Support prioritaire</li>
+                        </ul>
+                        
+                        <div class="payment-methods">
+                            <div class="payment-method">
+                                <i class="fab fa-cc-visa"></i> Visa
+                            </div>
+                            <div class="payment-method">
+                                <i class="fas fa-mobile-alt"></i> Mobile Money
+                            </div>
+                            <div class="payment-method">
+                                <i class="fas fa-money-bill-wave"></i> M-Pesa
+                            </div>
+                            <div class="payment-method">
+                                <i class="fas fa-sim-card"></i> Airtel Money
+                            </div>
+                            <div class="payment-method">
+                                <i class="fas fa-sim-card"></i> Orange Money
+                            </div>
+                        </div>
+                        
+                        <button class="btn btn-primary mt-2" style="width: 100%;" onclick="selectPlan('premium')">
+                            Choisir Premium
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Payment Page -->
+        <section id="payment-page" class="section hidden">
+            <div class="payment-container">
+                <div class="payment-header">
+                    <h2><i class="fas fa-lock"></i> Paiement sécurisé</h2>
+                    <p>Finalisez votre abonnement Premium</p>
+                </div>
+                
+                <div class="payment-body">
+                    <!-- Payment Steps -->
+                    <div class="payment-steps">
+                        <div class="payment-step active" id="step-1">
+                            <div class="step-number">1</div>
+                            <div class="step-label">Méthode de paiement</div>
+                        </div>
+                        <div class="payment-step" id="step-2">
+                            <div class="step-number">2</div>
+                            <div class="step-label">Informations</div>
+                        </div>
+                        <div class="payment-step" id="step-3">
+                            <div class="step-number">3</div>
+                            <div class="step-label">Confirmation</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 1: Payment Method Selection -->
+                    <div id="payment-step-1" class="payment-step-content active">
+                        <h3 class="mb-2 text-center">Choisissez votre méthode de paiement</h3>
+                        <p class="text-center mb-3">Sélectionnez votre méthode de paiement préférée</p>
+                        
+                        <div class="payment-methods-grid">
+                            <div class="payment-method-card" onclick="selectPaymentMethod('visa')">
+                                <i class="fab fa-cc-visa"></i>
+                                <h4>Carte Visa</h4>
+                                <p>Carte de crédit/débit</p>
+                            </div>
+                            
+                            <div class="payment-method-card" onclick="selectPaymentMethod('mobile_money')">
+                                <i class="fas fa-mobile-alt"></i>
+                                <h4>Mobile Money</h4>
+                                <p>Paiement mobile</p>
+                            </div>
+                            
+                            <div class="payment-method-card" onclick="selectPaymentMethod('mpesa')">
+                                <i class="fas fa-money-bill-wave"></i>
+                                <h4>M-Pesa</h4>
+                                <p>Service M-Pesa</p>
+                            </div>
+                            
+                            <div class="payment-method-card" onclick="selectPaymentMethod('airtel')">
+                                <i class="fas fa-sim-card"></i>
+                                <h4>Airtel Money</h4>
+                                <p>Airtel Money</p>
+                            </div>
+                            
+                            <div class="payment-method-card" onclick="selectPaymentMethod('orange')">
+                                <i class="fas fa-sim-card"></i>
+                                <h4>Orange Money</h4>
+                                <p>Orange Money</p>
+                            </div>
+                            
+                            <div class="payment-method-card" onclick="selectPaymentMethod('oft')">
+                                <i class="fas fa-qrcode"></i>
+                                <h4>OFT</h4>
+                                <p>Paiement par QR Code</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Payment Summary -->
+                        <div class="payment-summary">
+                            <h4>Récapitulatif de commande</h4>
+                            <div class="summary-item">
+                                <span>Formule Premium</span>
+                                <span>25,00 $</span>
+                            </div>
+                            <div class="summary-item">
+                                <span>Frais de service</span>
+                                <span>0,00 $</span>
+                            </div>
+                            <div class="summary-total">
+                                <span>Total à payer</span>
+                                <span>25,00 $</span>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-3">
+                            <button class="btn btn-primary btn-lg" onclick="nextPaymentStep()" id="next-step-btn" disabled>
+                                Suivant <i class="fas fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 2: Payment Form -->
+                    <div id="payment-step-2" class="payment-step-content">
+                        <h3 class="mb-2 text-center" id="payment-form-title">Informations de paiement</h3>
+                        
+                        <!-- Visa Form -->
+                        <div id="visa-form" class="payment-form">
+                            <form id="visaPaymentForm">
+                                <div class="form-group">
+                                    <label for="cardNumber">Numéro de carte</label>
+                                    <input type="text" id="cardNumber" class="form-control" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCardNumber(this)">
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="cardExpiry">Date d'expiration (MM/AA)</label>
+                                        <input type="text" id="cardExpiry" class="form-control" placeholder="MM/AA" maxlength="5" oninput="formatExpiryDate(this)">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                        <label for="cardCVC">Code CVC</label>
+                                        <input type="text" id="cardCVC" class="form-control" placeholder="123" maxlength="3" oninput="this.value = this.value.replace(/[^0-9]/g, '')">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="cardName">Nom sur la carte</label>
+                                    <input type="text" id="cardName" class="form-control" placeholder="JEAN DUPONT">
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Mobile Money Form -->
+                        <div id="mobile-money-form" class="payment-form">
+                            <form id="mobileMoneyForm">
+                                <div class="form-group">
+                                    <label for="mobileNumber">Numéro de téléphone</label>
+                                    <input type="tel" id="mobileNumber" class="form-control" placeholder="+243 99 060 1417" oninput="formatPhoneNumber(this)">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="mobileProvider">Opérateur</label>
+                                    <select id="mobileProvider" class="form-control">
+                                        <option value="">Sélectionnez votre opérateur</option>
+                                        <option value="vodacom">Vodacom</option>
+                                        <option value="airtel">Airtel</option>
+                                        <option value="orange">Orange</option>
+                                        <option value="africell">Africell</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="alert alert-info mt-2">
+                                    <i class="fas fa-info-circle"></i> Vous recevrez une demande de confirmation sur votre téléphone.
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- OFT QR Code Form -->
+                        <div id="oft-form" class="payment-form">
+                            <div class="text-center">
+                                <h4 class="mb-2">Scannez ce QR Code avec votre application OFT</h4>
+                                <div id="oft-qrcode" style="margin: 1.5rem auto; padding: 1.5rem; background: white; border-radius: 10px; display: inline-block; border: 2px solid #eee;"></div>
+                                <div class="transaction-details mt-3" style="max-width: 400px; margin: 0 auto;">
+                                    <p><strong>Montant :</strong> <span>25,00 $</span></p>
+                                    <p><strong>ID de transaction :</strong> <span id="oft-transaction-id">OFT-2024-00123</span></p>
+                                    <p><strong>Date d'expiration :</strong> <span id="oft-expiry">5 minutes</span></p>
+                                </div>
+                                <div class="mt-3">
+                                    <p><i class="fas fa-clock"></i> Ce QR Code expire dans <span id="oft-timer" style="font-weight: bold; color: var(--primary-color);">05:00</span> minutes</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- M-Pesa Form -->
+                        <div id="mpesa-form" class="payment-form">
+                            <div class="text-center">
+                                <h4 class="mb-2">Paiement par M-Pesa</h4>
+                                <p>Pour payer avec M-Pesa :</p>
+                                <div class="alert alert-info mt-2" style="text-align: left; background: #f8f9fa; padding: 1.5rem; border-radius: 8px;">
+                                    <ol style="margin-left: 1.5rem;">
+                                        <li>Accédez à M-Pesa sur votre téléphone</li>
+                                        <li>Sélectionnez "Envoyer de l'argent"</li>
+                                        <li>Entrez le numéro de paiement: <strong>123456</strong></li>
+                                        <li>Montant: <strong>25,00 $</strong></li>
+                                        <li>Entrez votre code M-Pesa</li>
+                                    </ol>
+                                </div>
+                                <div class="form-group mt-3">
+                                    <label for="mpesaCode">Code de transaction M-Pesa</label>
+                                    <input type="text" id="mpesaCode" class="form-control" placeholder="Entrez le code reçu par SMS">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Airtel Money Form -->
+                        <div id="airtel-form" class="payment-form">
+                            <div class="text-center">
+                                <h4 class="mb-2">Paiement par Airtel Money</h4>
+                                <p>Pour payer avec Airtel Money :</p>
+                                <div class="alert alert-info mt-2" style="text-align: left; background: #f8f9fa; padding: 1.5rem; border-radius: 8px;">
+                                    <ol style="margin-left: 1.5rem;">
+                                        <li>Accédez à Airtel Money sur votre téléphone</li>
+                                        <li>Sélectionnez "Payer une facture"</li>
+                                        <li>Code marchand: <strong>CEREMONIA</strong></li>
+                                        <li>Montant: <strong>25,00 $</strong></li>
+                                        <li>Confirmez la transaction</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Orange Money Form -->
+                        <div id="orange-form" class="payment-form">
+                            <div class="text-center">
+                                <h4 class="mb-2">Paiement par Orange Money</h4>
+                                <p>Pour payer avec Orange Money :</p>
+                                <div class="alert alert-info mt-2" style="text-align: left; background: #f8f9fa; padding: 1.5rem; border-radius: 8px;">
+                                    <ol style="margin-left: 1.5rem;">
+                                        <li>Accédez à Orange Money sur votre téléphone</li>
+                                        <li>Sélectionnez "Paiement marchand"</li>
+                                        <li>Code marchand: <strong>CEREM123</strong></li>
+                                        <li>Montant: <strong>25,00 $</strong></li>
+                                        <li>Entrez votre code secret</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Payment Summary -->
+                        <div class="payment-summary">
+                            <h4>Récapitulatif</h4>
+                            <div class="summary-total">
+                                <span>Total à payer</span>
+                                <span>25,00 $</span>
+                            </div>
+                        </div>
+                        
+                        <div class="text-center mt-3">
+                            <button class="btn btn-secondary" onclick="prevPaymentStep()">
+                                <i class="fas fa-arrow-left"></i> Retour
+                            </button>
+                            <button class="btn btn-primary" onclick="processPayment()" id="process-payment-btn">
+                                <i class="fas fa-lock"></i> Payer maintenant
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 3: Payment Status -->
+                    <div id="payment-step-3" class="payment-step-content">
+                        <div class="payment-status" id="payment-status-container">
+                            <!-- Payment status will be displayed here -->
+                        </div>
+                        
+                        <div class="text-center mt-3">
+                            <button class="btn btn-primary" onclick="showSection('dashboard')" id="back-to-dashboard-btn">
+                                <i class="fas fa-tachometer-alt"></i> Retour au tableau de bord
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Simulation Message -->
+                    <div class="simulation-message">
+                        <i class="fas fa-info-circle"></i>
+                        <div>
+                            <strong>Mode simulation activé :</strong> Ce système de paiement est une simulation. Aucun paiement réel ne sera effectué. Les données de carte bancaire ne sont pas enregistrées. Pour tester, vous pouvez utiliser des données fictives.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Login Form -->
+        <section id="login" class="section hidden">
+            <div class="form-container" style="max-width: 500px;">
+                <h2 class="text-center mb-3">Connexion</h2>
+                
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Adresse email</label>
+                        <input type="email" id="loginEmail" class="form-control" placeholder="votre@email.com" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="loginPassword">Mot de passe</label>
+                        <input type="password" id="loginPassword" class="form-control" required>
+                    </div>
+                    
+                    <div class="text-center mt-3">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-sign-in-alt"></i> Se connecter
+                        </button>
+                    </div>
+                </form>
+                
+                <p class="text-center mt-3">
+                    Pas encore de compte ? <a href="#" onclick="showSection('register')">Inscrivez-vous</a>
+                </p>
+            </div>
+        </section>
+
+        <!-- Register Form -->
+        <section id="register" class="section hidden">
+            <div class="form-container" style="max-width: 500px;">
+                <h2 class="text-center mb-3">Inscription</h2>
+                
+                <form id="registerForm">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="registerFirstName">Prénom</label>
+                            <input type="text" id="registerFirstName" class="form-control" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="registerLastName">Nom</label>
+                            <input type="text" id="registerLastName" class="form-control" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="registerEmail">Adresse email</label>
+                        <input type="email" id="registerEmail" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="registerPassword">Mot de passe</label>
+                        <input type="password" id="registerPassword" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="registerConfirmPassword">Confirmer le mot de passe</label>
+                        <input type="password" id="registerConfirmPassword" class="form-control" required>
+                    </div>
+                    
+                    <div class="text-center mt-3">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-user-plus"></i> S'inscrire
+                        </button>
+                    </div>
+                </form>
+                
+                <p class="text-center mt-3">
+                    Déjà un compte ? <a href="#" onclick="showSection('login')">Connectez-vous</a>
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>CÉRÉMONIA</h3>
+                <p>Plateforme web de souvenirs événementiels interactifs. Préservez chaque moment spécial en un seul endroit.</p>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Liens rapides</h3>
+                <ul>
+                    <li><a href="#" onclick="showSection('home')">Accueil</a></li>
+                    <li><a href="#" onclick="showSection('create-event')">Créer un événement</a></li>
+                    <li><a href="#" onclick="showSection('pricing')">Offres et tarifs</a></li>
+                    <li><a href="#" onclick="showSection('guest-view')">Mode invité</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="#">Centre d'aide</a></li>
+                    <li><a href="#">Contact</a></li>
+                    <li><a href="#">Conditions d'utilisation</a></li>
+                    <li><a href="#">Politique de confidentialité</a></li>
+                </ul>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <ul>
+                    <li><i class="fas fa-envelope"></i> henockaduma2@gmail.com</li>
+                    <li><i class="fas fa-phone"></i> +243 990601417</li>
+                    <li><i class="fas fa-map-marker-alt"></i> Kinshasa, RD Congo</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="copyright">
+            <p>&copy; 2025 CÉRÉMONIA. Tous droits réservés.</p>
+            <div class="company-signature">
+                Site web créé par HenoBuild Entreprise
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Application State
+        const state = {
+            currentUser: null,
+            events: [
+                {
+                    id: 1,
+                    name: "Mariage de Sophie et Marc",
+                    type: "wedding",
+                    date: "2024-06-15",
+                    location: "Paris",
+                    theme: "romantic",
+                    photos: 87,
+                    videos: 12,
+                    messages: 28,
+                    qrCode: "wedding-sophie-marc-2024",
+                    plan: "free"
+                },
+                {
+                    id: 2,
+                    name: "Anniversaire des 40 ans de Thomas",
+                    type: "birthday",
+                    date: "2024-05-20",
+                    location: "Lyon",
+                    theme: "fun",
+                    photos: 42,
+                    videos: 8,
+                    messages: 14,
+                    qrCode: "birthday-thomas-40",
+                    plan: "free"
+                }
+            ],
+            currentEventId: null,
+            galleryItems: [
+                { type: "photo", src: "https://images.unsplash.com/photo-1511285560929-80b456fea0bc?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", author: "Marie", date: "2024-06-15 14:30" },
+                { type: "photo", src: "https://images.unsplash.com/photo-1465495976277-4387d4b0e4a6?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", author: "Jean", date: "2024-06-15 16:45" },
+                { type: "video", src: "https://assets.mixkit.co/videos/preview/mixkit-group-of-friends-partying-happily-4640-large.mp4", author: "Luc", date: "2024-06-15 18:20" },
+                { type: "message", text: "Une journée magnifique, merci pour ce merveilleux événement !", author: "Claire", date: "2024-06-15 20:15" },
+                { type: "photo", src: "https://images.unsplash.com/photo-1478147427282-58a87a120781?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80", author: "Sophie", date: "2024-06-15 21:30" },
+                { type: "message", text: "Félicitations aux mariés !", author: "Pierre", date: "2024-06-15 22:00" }
+            ],
+            payment: {
+                selectedMethod: null,
+                currentStep: 1,
+                transactionId: null,
+                oftTimer: null,
+                timerInterval: null
+            }
+        };
+        
+        // DOM Elements
+        let cameraStream = null;
+        
+        // Navigation Functions
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Show selected section
+            const section = document.getElementById(sectionId);
+            if (section) {
+                section.classList.remove('hidden');
+                section.classList.add('active');
+                
+                // Update navigation
+                document.querySelectorAll('nav a').forEach(link => {
+                    link.classList.remove('active');
+                });
+                
+                // Special cases
+                if (sectionId === 'home') {
+                    document.querySelector('nav a:first-child').classList.add('active');
+                }
+                
+                // Load section-specific data
+                switch(sectionId) {
+                    case 'dashboard':
+                        loadDashboard();
+                        break;
+                    case 'gallery':
+                        loadGallery();
+                        break;
+                    case 'payment-page':
+                        resetPaymentFlow();
+                        break;
+                }
+            }
+            
+            return false;
+        }
+        
+        function showDashboardTab(tabId) {
+            // Update tab buttons
+            document.querySelectorAll('#dashboard .tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Show corresponding tab content
+            document.querySelectorAll('#dashboard .tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            document.getElementById(tabId === 'active' ? 'active-events' : tabId === 'past' ? 'past-events' : 'stats-tab').classList.add('active');
+        }
+        
+        // Event Creation
+        document.getElementById('eventForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const eventName = document.getElementById('eventName').value;
+            const eventType = document.getElementById('eventType').value;
+            const eventDate = document.getElementById('eventDate').value;
+            const eventLocation = document.getElementById('eventLocation').value;
+            const eventTheme = document.getElementById('eventTheme').value;
+            
+            // Create new event
+            const newEvent = {
+                id: state.events.length + 1,
+                name: eventName,
+                type: eventType,
+                date: eventDate,
+                location: eventLocation,
+                theme: eventTheme,
+                photos: 0,
+                videos: 0,
+                messages: 0,
+                qrCode: `event-${Date.now()}`,
+                plan: 'free'
+            };
+            
+            state.events.push(newEvent);
+            state.currentEventId = newEvent.id;
+            
+            // Show success message
+            alert(`Événement "${eventName}" créé avec succès !`);
+            
+            // Generate QR code
+            generateQRCode(newEvent.qrCode);
+            
+            // Show QR code section
+            document.getElementById('event-link').textContent = `https://ceremonia.com/event/${newEvent.qrCode}`;
+            showSection('qr-code');
+            
+            // Reset form
+            this.reset();
+        });
+        
+        // Dashboard Functions
+        function loadDashboard() {
+            const eventsContainer = document.getElementById('eventsContainer');
+            eventsContainer.innerHTML = '';
+            
+            state.events.forEach(event => {
+                const eventCard = document.createElement('div');
+                eventCard.className = 'event-card';
+                eventCard.innerHTML = `
+                    <div class="event-header">
+                        <h3>${event.name}</h3>
+                        <p>${formatDate(event.date)} - ${event.location}</p>
+                        <span style="font-size: 0.8rem; background: ${event.plan === 'premium' ? 'gold' : '#6c757d'}; color: white; padding: 2px 8px; border-radius: 12px; display: inline-block; margin-top: 5px;">
+                            ${event.plan === 'premium' ? '⭐ Premium' : '🆓 Standard'}
+                        </span>
+                    </div>
+                    <div class="event-body">
+                        <p><strong>Type :</strong> ${getEventTypeLabel(event.type)}</p>
+                        <p><strong>Thème :</strong> ${getThemeLabel(event.theme)}</p>
+                        <div class="event-stats">
+                            <div class="stat">
+                                <div class="stat-value">${event.photos}</div>
+                                <div class="stat-label">Photos</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">${event.videos}</div>
+                                <div class="stat-label">Vidéos</div>
+                            </div>
+                            <div class="stat">
+                                <div class="stat-value">${event.messages}</div>
+                                <div class="stat-label">Messages</div>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <button class="btn btn-primary" onclick="viewEvent(${event.id})">
+                                <i class="fas fa-eye"></i> Voir
+                            </button>
+                            <button class="btn btn-secondary" onclick="shareEvent(${event.id})">
+                                <i class="fas fa-share-alt"></i> Partager
+                            </button>
+                            ${event.plan === 'free' ? `<button class="btn btn-warning" onclick="upgradeEvent(${event.id})">
+                                <i class="fas fa-crown"></i> Passer à Premium
+                            </button>` : ''}
+                        </div>
+                    </div>
+                `;
+                
+                eventsContainer.appendChild(eventCard);
+            });
+        }
+        
+        function viewEvent(eventId) {
+            const event = state.events.find(e => e.id === eventId);
+            if (event) {
+                // Set guest view details
+                document.getElementById('guestEventTitle').textContent = event.name;
+                document.getElementById('guestEventDate').textContent = formatDate(event.date);
+                document.getElementById('galleryEventTitle').textContent = event.name;
+                document.getElementById('galleryEventDate').textContent = `Événement du ${formatDate(event.date)}`;
+                
+                state.currentEventId = eventId;
+                showSection('guest-view');
+            }
+        }
+        
+        function shareEvent(eventId) {
+            const event = state.events.find(e => e.id === eventId);
+            if (event) {
+                state.currentEventId = eventId;
+                generateQRCode(event.qrCode);
+                document.getElementById('event-link').textContent = `https://ceremonia.com/event/${event.qrCode}`;
+                showSection('qr-code');
+            }
+        }
+        
+        function upgradeEvent(eventId) {
+            const event = state.events.find(e => e.id === eventId);
+            if (event) {
+                state.currentEventId = eventId;
+                selectPlan('premium');
+            }
+        }
+        
+        // Guest View Functions
+        function takePhoto() {
+            document.getElementById('camera-container').classList.remove('hidden');
+            document.getElementById('message-form').classList.add('hidden');
+            
+            // Access camera
+            navigator.mediaDevices.getUserMedia({ video: true, audio: false })
+                .then(stream => {
+                    cameraStream = stream;
+                    const video = document.getElementById('camera-preview');
+                    video.srcObject = stream;
+                })
+                .catch(err => {
+                    console.error("Erreur d'accès à la caméra:", err);
+                    alert("Impossible d'accéder à la caméra. Vérifiez vos permissions.");
+                });
+        }
+        
+        function closeCamera() {
+            if (cameraStream) {
+                cameraStream.getTracks().forEach(track => track.stop());
+                cameraStream = null;
+            }
+            document.getElementById('camera-container').classList.add('hidden');
+        }
+        
+        function capturePhoto() {
+            const video = document.getElementById('camera-preview');
+            const canvas = document.getElementById('photo-canvas');
+            const context = canvas.getContext('2d');
+            
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            // Convert to data URL
+            const photoData = canvas.toDataURL('image/jpeg');
+            
+            // Simulate upload
+            const guestName = document.getElementById('guestName').value || 'Invité';
+            simulateUpload('photo', photoData, guestName);
+            
+            // Close camera
+            closeCamera();
+        }
+        
+        function recordVideo() {
+            alert("Fonctionnalité d'enregistrement vidéo à implémenter. Pour l'instant, vous pouvez prendre des photos.");
+        }
+        
+        function showMessageForm() {
+            document.getElementById('message-form').classList.remove('hidden');
+            document.getElementById('camera-container').classList.add('hidden');
+        }
+        
+        function hideMessageForm() {
+            document.getElementById('message-form').classList.add('hidden');
+            document.getElementById('messageText').value = '';
+        }
+        
+        function sendMessage() {
+            const message = document.getElementById('messageText').value;
+            const guestName = document.getElementById('guestName').value || 'Invité';
+            
+            if (message.trim()) {
+                simulateUpload('message', message, guestName);
+                document.getElementById('messageText').value = '';
+                hideMessageForm();
+            } else {
+                alert("Veuillez écrire un message avant d'envoyer.");
+            }
+        }
+        
+        function simulateUpload(type, content, author) {
+            // Show loading/uploading state
+            const originalTitle = document.getElementById('guestEventTitle').textContent;
+            document.getElementById('guestEventTitle').textContent = "Envoi en cours...";
+            
+            // Simulate network delay
+            setTimeout(() => {
+                // Add to gallery items
+                const newItem = {
+                    type: type,
+                    [type === 'message' ? 'text' : 'src']: content,
+                    author: author,
+                    date: new Date().toISOString()
+                };
+                
+                state.galleryItems.unshift(newItem);
+                
+                // Update event stats if we have a current event
+                if (state.currentEventId) {
+                    const eventIndex = state.events.findIndex(e => e.id === state.currentEventId);
+                    if (eventIndex !== -1) {
+                        if (type === 'photo') state.events[eventIndex].photos++;
+                        else if (type === 'video') state.events[eventIndex].videos++;
+                        else if (type === 'message') state.events[eventIndex].messages++;
+                    }
+                }
+                
+                // Show success animation
+                document.getElementById('guestEventTitle').innerHTML = `
+                    <span style="color: var(--success-color);">
+                        <i class="fas fa-check-circle"></i> Merci pour votre contribution !
+                    </span>
+                `;
+                
+                // Reset after delay
+                setTimeout(() => {
+                    document.getElementById('guestEventTitle').textContent = originalTitle;
+                }, 2000);
+                
+                // Reload gallery if open
+                if (!document.getElementById('gallery').classList.contains('hidden')) {
+                    loadGallery();
+                }
+            }, 1500);
+        }
+        
+        // Gallery Functions
+        function loadGallery() {
+            const galleryGrid = document.getElementById('galleryGrid');
+            galleryGrid.innerHTML = '';
+            
+            state.galleryItems.forEach(item => {
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery-item';
+                galleryItem.dataset.type = item.type;
+                
+                if (item.type === 'photo') {
+                    galleryItem.innerHTML = `
+                        <img src="${item.src}" alt="Photo de ${item.author}">
+                        <div class="item-info">
+                            <p><strong>${item.author}</strong></p>
+                            <p>${formatDateTime(item.date)}</p>
+                        </div>
+                    `;
+                } else if (item.type === 'video') {
+                    galleryItem.innerHTML = `
+                        <video controls>
+                            <source src="${item.src}" type="video/mp4">
+                            Votre navigateur ne supporte pas la lecture de vidéos.
+                        </video>
+                        <div class="item-info">
+                            <p><strong>${item.author}</strong></p>
+                            <p>${formatDateTime(item.date)}</p>
+                        </div>
+                    `;
+                } else if (item.type === 'message') {
+                    galleryItem.innerHTML = `
+                        <div class="item-info">
+                            <p><i class="fas fa-quote-left"></i> ${item.text}</p>
+                            <p><strong>${item.author}</strong> - ${formatDateTime(item.date)}</p>
+                        </div>
+                    `;
+                }
+                
+                galleryGrid.appendChild(galleryItem);
+            });
+        }
+        
+        function filterGallery(filter) {
+            // Update filter buttons
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Show/hide gallery items
+            document.querySelectorAll('.gallery-item').forEach(item => {
+                if (filter === 'all' || item.dataset.type === filter) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+        
+        // QR Code Functions
+        function generateQRCode(data) {
+            const qrContainer = document.getElementById('qrcode');
+            qrContainer.innerHTML = '';
+            
+            QRCode.toCanvas(qrContainer, `https://ceremonia.com/event/${data}`, {
+                width: 200,
+                height: 200,
+                color: {
+                    dark: '#166088',
+                    light: '#ffffff'
+                }
+            }, function(error) {
+                if (error) console.error(error);
+            });
+        }
+        
+        function copyLink() {
+            const link = document.getElementById('event-link').textContent;
+            navigator.clipboard.writeText(link)
+                .then(() => {
+                    alert('Lien copié dans le presse-papier !');
+                })
+                .catch(err => {
+                    console.error('Erreur lors de la copie : ', err);
+                });
+        }
+        
+        // Pricing Functions
+        function selectPlan(plan) {
+            if (plan === 'premium') {
+                // Show payment page
+                showSection('payment-page');
+            } else {
+                alert("Formule Standard sélectionnée ! Vous pouvez créer votre premier événement.");
+                showSection('create-event');
+            }
+        }
+        
+        // Payment Functions
+        function resetPaymentFlow() {
+            // Reset payment state
+            state.payment.selectedMethod = null;
+            state.payment.currentStep = 1;
+            state.payment.transactionId = null;
+            
+            // Clear any existing timer
+            if (state.payment.timerInterval) {
+                clearInterval(state.payment.timerInterval);
+                state.payment.timerInterval = null;
+            }
+            
+            // Reset UI
+            document.querySelectorAll('.payment-step').forEach(step => {
+                step.classList.remove('active', 'completed');
+            });
+            document.getElementById('step-1').classList.add('active');
+            
+            document.querySelectorAll('.payment-step-content').forEach(content => {
+                content.classList.add('hidden');
+            });
+            document.getElementById('payment-step-1').classList.remove('hidden');
+            
+            document.getElementById('next-step-btn').disabled = true;
+            
+            // Reset payment method selection
+            document.querySelectorAll('.payment-method-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            // Hide all payment forms
+            document.querySelectorAll('.payment-form').forEach(form => {
+                form.classList.remove('active');
+            });
+        }
+        
+        function selectPaymentMethod(method) {
+            // Update selected method
+            state.payment.selectedMethod = method;
+            
+            // Update UI
+            document.querySelectorAll('.payment-method-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+            
+            event.currentTarget.classList.add('selected');
+            
+            // Enable next button
+            document.getElementById('next-step-btn').disabled = false;
+        }
+        
+        function nextPaymentStep() {
+            if (state.payment.selectedMethod) {
+                // Update steps
+                document.getElementById('step-1').classList.remove('active');
+                document.getElementById('step-1').classList.add('completed');
+                document.getElementById('step-2').classList.add('active');
+                
+                // Hide current step, show next
+                document.getElementById('payment-step-1').classList.add('hidden');
+                document.getElementById('payment-step-2').classList.remove('hidden');
+                
+                // Update payment form title
+                const methodTitles = {
+                    'visa': 'Paiement par Carte Visa',
+                    'mobile_money': 'Paiement par Mobile Money',
+                    'mpesa': 'Paiement par M-Pesa',
+                    'airtel': 'Paiement par Airtel Money',
+                    'orange': 'Paiement par Orange Money',
+                    'oft': 'Paiement par OFT (QR Code)'
+                };
+                
+                document.getElementById('payment-form-title').textContent = 
+                    methodTitles[state.payment.selectedMethod] || 'Informations de paiement';
+                
+                // Show appropriate form
+                const formId = `${state.payment.selectedMethod}-form`;
+                document.getElementById(formId).classList.add('active');
+                
+                // Special handling for OFT
+                if (state.payment.selectedMethod === 'oft') {
+                    generateOFTQRCode();
+                    startOFTTimer();
+                }
+                
+                state.payment.currentStep = 2;
+            }
+        }
+        
+        function prevPaymentStep() {
+            // Update steps
+            document.getElementById('step-2').classList.remove('active');
+            document.getElementById('step-1').classList.remove('completed');
+            document.getElementById('step-1').classList.add('active');
+            
+            // Hide current step, show previous
+            document.getElementById('payment-step-2').classList.add('hidden');
+            document.getElementById('payment-step-1').classList.remove('hidden');
+            
+            // Clear OFT timer if active
+            if (state.payment.selectedMethod === 'oft' && state.payment.timerInterval) {
+                clearInterval(state.payment.timerInterval);
+                state.payment.timerInterval = null;
+            }
+            
+            state.payment.currentStep = 1;
+        }
+        
+        // Formatting functions for payment forms
+        function formatCardNumber(input) {
+            let value = input.value.replace(/\s+/g, '').replace(/[^0-9]/g, '');
+            let formatted = '';
+            
+            for (let i = 0; i < value.length; i++) {
+                if (i > 0 && i % 4 === 0) {
+                    formatted += ' ';
+                }
+                formatted += value[i];
+            }
+            
+            input.value = formatted.substring(0, 19);
+        }
+        
+        function formatExpiryDate(input) {
+            let value = input.value.replace(/[^0-9]/g, '');
+            
+            if (value.length >= 2) {
+                input.value = value.substring(0, 2) + '/' + value.substring(2, 4);
+            } else {
+                input.value = value;
+            }
+        }
+        
+        function formatPhoneNumber(input) {
+            let value = input.value.replace(/\s+/g, '').replace(/[^0-9+]/g, '');
+            
+            if (value.startsWith('+')) {
+                if (value.length > 3) {
+                    input.value = value.substring(0, 3) + ' ' + value.substring(3);
+                } else {
+                    input.value = value;
+                }
+            }
+        }
+        
+        function generateOFTQRCode() {
+            // Generate transaction ID
+            state.payment.transactionId = `OFT-${Date.now()}-${Math.random().toString(36).substr(2, 6).toUpperCase()}`;
+            document.getElementById('oft-transaction-id').textContent = state.payment.transactionId;
+            
+            // Generate QR code for OFT
+            const qrContainer = document.getElementById('oft-qrcode');
+            qrContainer.innerHTML = '';
+            
+            // Create OFT payment data
+            const oftData = {
+                transactionId: state.payment.transactionId,
+                amount: 25.00,
+                currency: 'USD',
+                merchant: 'CÉRÉMONIA',
+                timestamp: new Date().toISOString(),
+                description: 'Abonnement Premium CÉRÉMONIA'
+            };
+            
+            QRCode.toCanvas(qrContainer, JSON.stringify(oftData), {
+                width: 200,
+                height: 200,
+                color: {
+                    dark: '#166088',
+                    light: '#ffffff'
+                }
+            }, function(error) {
+                if (error) console.error(error);
+            });
+        }
+        
+        function startOFTTimer() {
+            let timeLeft = 5 * 60; // 5 minutes in seconds
+            
+            // Update timer display
+            const updateTimer = () => {
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                document.getElementById('oft-timer').textContent = 
+                    `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                
+                if (timeLeft <= 0) {
+                    clearInterval(state.payment.timerInterval);
+                    document.getElementById('oft-timer').textContent = "Expiré";
+                    document.getElementById('process-payment-btn').disabled = true;
+                }
+                
+                timeLeft--;
+            };
+            
+            updateTimer(); // Initial call
+            state.payment.timerInterval = setInterval(updateTimer, 1000);
+        }
+        
+        async function processPayment() {
+            // Disable button to prevent multiple clicks
+            document.getElementById('process-payment-btn').disabled = true;
+            document.getElementById('process-payment-btn').innerHTML = '<i class="fas fa-spinner fa-spin"></i> Traitement...';
+            
+            try {
+                // Simulate API call delay
+                await new Promise(resolve => setTimeout(resolve, 2000));
+                
+                // Simulate payment processing - 90% success rate
+                const isSuccess = Math.random() > 0.1;
+                
+                if (isSuccess) {
+                    // Update steps
+                    document.getElementById('step-2').classList.remove('active');
+                    document.getElementById('step-2').classList.add('completed');
+                    document.getElementById('step-3').classList.add('active');
+                    
+                    // Hide current step, show confirmation
+                    document.getElementById('payment-step-2').classList.add('hidden');
+                    document.getElementById('payment-step-3').classList.remove('hidden');
+                    
+                    // Show success message
+                    showPaymentStatus(true);
+                    
+                    // Update event to premium if we have a current event
+                    if (state.currentEventId) {
+                        const eventIndex = state.events.findIndex(e => e.id === state.currentEventId);
+                        if (eventIndex !== -1) {
+                            state.events[eventIndex].plan = 'premium';
+                        }
+                    }
+                } else {
+                    // Show error message
+                    showPaymentStatus(false);
+                }
+                
+            } catch (error) {
+                console.error('Payment processing error:', error);
+                showPaymentStatus(false, { error: 'Erreur réseau. Veuillez réessayer.' });
+            } finally {
+                // Re-enable button
+                document.getElementById('process-payment-btn').disabled = false;
+                document.getElementById('process-payment-btn').innerHTML = '<i class="fas fa-lock"></i> Payer maintenant';
+            }
+        }
+        
+        function showPaymentStatus(isSuccess, result) {
+            const statusContainer = document.getElementById('payment-status-container');
+            
+            if (isSuccess) {
+                const transactionId = `TXN-${Date.now()}-${Math.random().toString(36).substr(2, 9).toUpperCase()}`;
+                statusContainer.className = 'payment-status status-success';
+                statusContainer.innerHTML = `
+                    <div class="status-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3>Paiement réussi !</h3>
+                    <p>Votre abonnement Premium a été activé avec succès.</p>
+                    <div class="transaction-details">
+                        <p><strong>ID de transaction :</strong> <span>${transactionId}</span></p>
+                        <p><strong>Montant :</strong> <span>25,00 USD</span></p>
+                        <p><strong>Date :</strong> <span>${new Date().toLocaleDateString('fr-FR')}</span></p>
+                        <p><strong>Méthode :</strong> <span>${getPaymentMethodLabel(state.payment.selectedMethod)}</span></p>
+                    </div>
+                    <div class="mt-3">
+                        <p><i class="fas fa-gift"></i> Vous avez maintenant accès à toutes les fonctionnalités Premium !</p>
+                        <p>Votre événement a été mis à niveau vers la formule Premium.</p>
+                    </div>
+                `;
+            } else {
+                statusContainer.className = 'payment-status status-error';
+                statusContainer.innerHTML = `
+                    <div class="status-icon">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+                    <h3>Paiement échoué</h3>
+                    <p>${result?.error || 'Une erreur est survenue lors du traitement de votre paiement.'}</p>
+                    <p><strong>Code d'erreur :</strong> ${result?.errorCode || 'INCONNU'}</p>
+                    <div class="mt-3">
+                        <p>Veuillez réessayer ou choisir une autre méthode de paiement.</p>
+                        <button class="btn btn-warning mt-2" onclick="prevPaymentStep()">
+                            <i class="fas fa-redo"></i> Réessayer
+                        </button>
+                    </div>
+                `;
+            }
+        }
+        
+        function getPaymentMethodLabel(method) {
+            const labels = {
+                'visa': 'Carte Visa',
+                'mobile_money': 'Mobile Money',
+                'mpesa': 'M-Pesa',
+                'airtel': 'Airtel Money',
+                'orange': 'Orange Money',
+                'oft': 'OFT (QR Code)'
+            };
+            return labels[method] || method;
+        }
+        
+        // Auth Functions
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert("Connexion simulée - En production, cette fonction se connecterait à un backend.");
+            state.currentUser = {
+                name: "Utilisateur Test",
+                email: document.getElementById('loginEmail').value
+            };
+            showSection('dashboard');
+        });
+        
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const password = document.getElementById('registerPassword').value;
+            const confirmPassword = document.getElementById('registerConfirmPassword').value;
+            
+            if (password !== confirmPassword) {
+                alert("Les mots de passe ne correspondent pas.");
+                return;
+            }
+            
+            alert("Inscription simulée - En production, cette fonction enregistrerait l'utilisateur.");
+            state.currentUser = {
+                name: document.getElementById('registerFirstName').value + " " + document.getElementById('registerLastName').value,
+                email: document.getElementById('registerEmail').value
+            };
+            showSection('dashboard');
+        });
+        
+        // Utility Functions
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('fr-FR', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+        }
+        
+        function formatDateTime(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('fr-FR', {
+                day: 'numeric',
+                month: 'short',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+        
+        function getEventTypeLabel(type) {
+            const types = {
+                wedding: "Mariage",
+                birthday: "Anniversaire",
+                baptism: "Baptême",
+                party: "Fête privée",
+                corporate: "Événement professionnel",
+                other: "Autre"
+            };
+            return types[type] || type;
+        }
+        
+        function getThemeLabel(theme) {
+            const themes = {
+                classic: "Classique",
+                modern: "Moderne",
+                elegant: "Élégant",
+                fun: "Fun",
+                romantic: "Romantique"
+            };
+            return themes[theme] || theme;
+        }
+        
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set default date for event creation to tomorrow
+            const tomorrow = new Date();
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            document.getElementById('eventDate').valueAsDate = tomorrow;
+            
+            // Load initial data
+            loadDashboard();
+            loadGallery();
+            
+            // Show home section by default
+            showSection('home');
+        });
+    </script>
+</body>
+</html> 
